@@ -31,11 +31,11 @@ function showTasks($tasks)
                         
                         <p>Имя пользователя: ' . $task['user_name'] . '</p>
                         <input type="hidden" name="email" value="' . $task['email'] . '">                        
-                        <p>Почта: ' . $task['email'] . '</p>
+                        <p>email: ' . $task['email'] . '</p>
                         <input type="hidden" name="text" value="' . $task['text'] . '">
-                        <p>Текст:</p>
+                        <p>Текст задачи:</p>
                         <textarea readonly="readonly" name="text" cols="100" rows="5">' . $task['text'] . '</textarea>                        
-                        <p>Статусы: </p><p>' . implode('</p><p>', $task['statuses']) . '</p>                                                                                               
+                        <p>Статус: </p><p>' . implode('</p><p>', $task['statuses']) . '</p>                                                                                               
                         ' . (
                             !empty($_SESSION['rules']) &&
                             in_array('edit', $_SESSION['rules']) ?
@@ -127,7 +127,7 @@ function showSort($params)
     $arr_order = [
         'id'        => 'добавлению',
         'user_name' => 'имени прльзователя',
-        'email'     => 'e-mail',
+        'email'     => 'email',
         'status'    => 'статусу',
     ];
 

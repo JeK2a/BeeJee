@@ -1,12 +1,12 @@
 <form enctype="multipart/form-data" method="post" action="taskslist">
     <?php echo empty($data['id']) ? '' : '<input type="hidden" name="id" value="' . $data['id'] . '">'; ?>
     <div class="form-group">
-        <label for="exampleInputEmail1">Имя пользователя</label>
-        <input required type="text" class="form-control" name="user_name" aria-describedby="Test" value="<?php echo $data['user_name'] ?? ''; ?>">
+        <label>email</label>
+        <input required type="email" class="form-control" name="email" value="<?php echo $data['email'] ?? ''; ?>">
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">e-mail</label>
-        <input required type="email" class="form-control" name="email" value="<?php echo $data['email'] ?? ''; ?>">
+        <label for="exampleInputEmail1">Имя пользователя</label>
+        <input required type="text" class="form-control" name="user_name" aria-describedby="Test" value="<?php echo $data['user_name'] ?? ''; ?>">
     </div>
     <div class="form-group">
         <label for="exampleFormControlTextarea1">Текст задачи</label>

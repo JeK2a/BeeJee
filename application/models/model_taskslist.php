@@ -45,7 +45,7 @@ class Model_TasksList implements Model
         $limit = $params['limit'];
 
         $order = $params['order'] ?? 'id';
-        $by    = $params['by']  ?? 'DESC';
+        $by    = $params['by']    ?? 'DESC';
 
         $query = '
             SELECT 

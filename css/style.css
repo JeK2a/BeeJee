@@ -1,0 +1,132 @@
+﻿body{
+    background: url(../images/background-white.png);
+    color: black;
+}
+
+img{
+    margin: 10px;
+    width : 320px;
+    height: 240px;
+    background-repeat     : no-repeat;
+    background-size       : cover;
+    background-position-x : 50%;
+    background-position-y : 50%;
+}
+
+.btn{
+    text-align: center;
+    align-items: center;
+    border-radius: 5px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.4s ease 0s;
+}
+.btn:before{
+    content: "";
+    width: 200%;
+    height: 180%;
+    position: absolute;
+    top: -120px;
+    left: 30px;
+    transform: skew(67deg);
+    z-index: -1;
+    transition: all 0.4s ease 0s;
+}
+.btn:hover:before{
+    top: -20px;
+    left: -55px;
+}
+.btn.red{
+    border: 1px solid #ff3939;
+    color: #ff3939;
+}
+.btn.red:hover:before{
+    background: #ff3939;
+}
+.btn.blue{
+    border: 1px solid #3fb7c8;
+    color: #3fb7c8;
+}
+.btn.blue:hover:before{
+    background: #3fb7c8;
+}
+.btn.green{
+    border: 1px solid #35c568;
+    color: #35c568;
+}
+.btn.green:hover:before{
+    background: #35c568;
+}
+.btn.red:hover,
+.btn.blue:hover,
+.btn.orange:hover,
+.btn.green:hover,
+.btn.yellow:hover{
+    color: #fff;
+}
+@media screen and (max-width: 767px){
+    .btn{
+        margin-bottom: 15px;
+    }
+}
+.pad-15{
+    padding: 5px 50px;
+}
+
+div.col-sm, #footer {
+    align-content: center;
+    text-align: center;
+}
+
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    margin-top: 30px;
+}
+
+ul.pagination li {
+    display: inline;
+}
+
+ul.pagination li a {
+    color: black;
+    padding: 8px 8px;
+    text-decoration: none;
+    margin: 0 4px;
+}
+
+ul.pagination li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+ul.pagination li a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+ul.pagination li.disabled
+{
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+div.task p {
+    margin-bottom: 0;
+}
+
+div.statuses input[type="checkbox"],
+div.statuses label {
+    display: inline;
+}
+
+div.tasks_filter p,
+div.tasks_filter select {
+    display: inline;
+}
+
+.pagination {
+    margin-left: 35%;
+}

@@ -1,73 +1,69 @@
 <?php
 
+declare(strict_types=1);
+
 class Route
 {
+    public static function start(): void
+    {
+        $controller_name = 'TasksList';
+        $action_name     = 'index';
 
-	public static function start()
-	{
-		// контроллер и действие по умолчанию
-		$controller_name = 'TasksList';
-		$action_name = 'index';
+        $routes = explode('/', explode('?', $_SERVER['REQUEST_URI'] ?? '/')[0]);
 
-		$routes = explode('/', explode('?', $_SERVER['REQUEST_URI'])[0]);
+        if (!empty($routes[1])) {
+            $controller_name = $routes[1];
+        }
 
-		// получаем имя контроллера
-		if (!empty($routes[1])) {
-			$controller_name = $routes[1];
-		}
-		
-		// получаем имя экшена
-		if (!empty($routes[2])) {
-			$action_name = $routes[2];
-		}
+        if (!empty($routes[2])) {
+            $action_name = $routes[2];
+        }
 
-		// добавляем префиксы
-		$model_name      = 'Model_'      . $controller_name;
-		$controller_name = 'Controller_' . $controller_name;
-		$action_name     = 'action_'     . $action_name;
+        $model_name      = 'Model_' . $controller_name;
+        $controller_name = 'Controller_' . $controller_name;
+        $action_name     = 'action_' . $action_name;
 
-		// подцепляем файл с классом модели (файла модели может и не быть)
+        $model_file = strtolower($model_name) . '.php';
+        $model_path = 'application/models/' . $model_file;
 
-		$model_file = strtolower($model_name).'.php';
-		$model_path = "application/models/" . $model_file;
+        if (file_exists($model_path)) {
+            require_once 'application/models/' . $model_file;
+        }
 
-		if (file_exists($model_path)) {
-			include "application/models/" . $model_file;
-		}
+        $controller_file = strtolower($controller_name) . '.php';
+        $controller_path = 'application/controllers/' . $controller_file;
 
-		// подцепляем файл с классом контроллера
-		$controller_file = strtolower($controller_name) . '.php';
-		$controller_path = "application/controllers/" . $controller_file;
+        if (!file_exists($controller_path)) {
+            self::errorPage404();
 
-		if (!file_exists($controller_path)) {
-			Route::ErrorPage404();
+            return;
+        }
 
-            $controller_name = 'Controller_404';
-            $controller_file = 'controller_404.php';
-		}
+        require_once 'application/controllers/' . $controller_file;
 
-        include "application/controllers/" . $controller_file;
+        if (!class_exists($controller_name, false)) {
+            self::errorPage404();
 
-		// создаем контроллер
-        $controller = new $controller_name;
-		$action = $action_name;
-		
-		if (method_exists($controller, $action)) {
-			// вызываем действие контроллера
-			$controller->$action();
-		} else {
-			// здесь также разумнее было бы кинуть исключение
-			Route::ErrorPage404();
-		}
-	
-	}
+            return;
+        }
 
-	private function ErrorPage404()
-	{
-        $host = 'https://'.$_SERVER['HTTP_HOST'].'/';
-        header('HTTP/1.1 404 Not Found');
-		header("Status: 404 Not Found");
-		header('Location:'.$host.'404');
+        $controller = new $controller_name();
+        $action     = $action_name;
+
+        if (method_exists($controller, $action)) {
+            $controller->$action();
+        } else {
+            self::errorPage404();
+        }
     }
-    
+
+    private static function errorPage404(): void
+    {
+        http_response_code(404);
+        if (!class_exists('Controller_404', false)) {
+            require_once 'application/controllers/controller_404.php';
+        }
+        $c = new Controller_404();
+        $c->action_index();
+    }
 }

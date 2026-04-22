@@ -1,1 +1,7 @@
 /.idea/
+/vendor/
+/.env
+/storage/*.sqlite
+/storage/*.sqlite-journal
+/composer
+/.phpunit.cache

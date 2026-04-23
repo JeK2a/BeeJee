@@ -7,6 +7,8 @@ require_once __DIR__ . '/../class/db.php';
 class Model_TasksList implements Model
 {
     private $db;
+    private const ALLOWED_ORDER_FIELDS = ['id', 'user_name', 'email', 'status'];
+    private const ALLOWED_ORDER_DIRECTIONS = ['ASC', 'DESC'];
 
     public function __construct()
     {
@@ -37,15 +39,22 @@ class Model_TasksList implements Model
 
     private function getTasks($params)
     {
-        foreach ($params as $key => $value) {
-            $params[$key] = addslashes($value);
-        }
+        $page  = (int)($params['page'] ?? 1);
+        $limit = (int)($params['limit'] ?? 3);
+        $page  = $page > 0 ? $page : 1;
+        $limit = $limit > 0 ? $limit : 3;
 
-        $index = $params['page'] - 1;
-        $limit = $params['limit'];
+        $offset = ($page - 1) * $limit;
 
         $order = $params['order'] ?? 'id';
-        $by    = $params['by']    ?? 'DESC';
+        if (!in_array($order, self::ALLOWED_ORDER_FIELDS, true)) {
+            $order = 'id';
+        }
+
+        $by = strtoupper((string)($params['by'] ?? 'DESC'));
+        if (!in_array($by, self::ALLOWED_ORDER_DIRECTIONS, true)) {
+            $by = 'DESC';
+        }
 
         $query = '
             SELECT 
@@ -56,10 +65,13 @@ class Model_TasksList implements Model
                 `status`
             FROM `task`
             ORDER BY `' . $order . '` ' . $by . ' 
-            LIMIT ' . $index * $limit .',' . $limit;
+            LIMIT :offset, :limit';
 
-        $que  = $this->db->query($query);
-        $tasks = $que->fetchAll();
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $tasks = $stmt->fetchAll();
 
         foreach ($tasks as $key => $task) {
             $tasks[$key]['statuses'] = explode('|', $task['status']);

@@ -18,9 +18,12 @@ class Controller_TasksList extends Controller
             echo '<script>alert("Задача сохранена");</script>';
         }
 
+        $page = (int)($_GET['page'] ?? 1);
+        $limit = (int)($_GET['limit'] ?? 3);
+
         $params = [
-            'page'  => $_GET['page']   ?? 1,
-            'limit' => $_GET['limit']  ?? 3,
+            'page'  => $page > 0 ? $page : 1,
+            'limit' => $limit > 0 ? $limit : 3,
             'order' => $_POST['order'] ?? $_GET['order'] ?? 'id',
             'by'    => $_POST['by']    ?? $_GET['by']    ?? 'DESC',
         ];

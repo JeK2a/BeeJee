@@ -10,7 +10,7 @@ echo showLinks($params);
 function showTasks($tasks)
 {
     $html = '
-        <dic class="tasks_list">';
+        <div class="tasks_list">';
 
     if (!empty($tasks)) {
         foreach ($tasks as $key => $task) {
@@ -66,17 +66,10 @@ function showLinks($params)
     $limit = $params['limit'];
     $total = $params['total'];
 
-    $get_url = '';
-
     $params = array_merge($params, $_POST);
-
-    unset($params['page']);
-
-    if (!empty($params)) {
-        foreach ($params as $key => $value) {
-            $get_url .= '&' . $key . '=' . $value;
-        }
-    }
+    unset($params['page'], $params['total'], $params['links']);
+    $get_url = http_build_query($params);
+    $get_url = $get_url !== '' ? '&' . $get_url : '';
 
     $last = ceil($total / $limit);
 
@@ -152,7 +145,7 @@ function showSort($params)
         </form>
     ';
 
-    echo $html;
+    return $html;
 }
 
 function getOptions($arr, $selected = '')

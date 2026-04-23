@@ -1,6 +1,7 @@
 <?php
 
 use db\DB;
+use PDO;
 
 require_once __DIR__ . '/../class/db.php';
 

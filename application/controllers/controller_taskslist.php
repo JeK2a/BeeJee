@@ -1,32 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 class Controller_TasksList extends Controller
 {
-
-    function __construct()
+    public function __construct()
     {
+        parent::__construct();
         $this->model = new Model_TasksList();
         $this->view  = new View();
     }
 
-    function action_index()
+    public function action_index(): void
     {
-        if (!empty($_POST['user_name'])) {
-            $form = $_POST;
-            $this->model->set_data($form);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['user_name'])) {
+            if (!\App\Csrf::validate($_POST['_csrf'] ?? null)) {
+                \App\Flash::error('Недействительная сессия. Обновите страницу и попробуйте снова.');
+                $this->redirect('/taskslist');
+            }
 
-            echo '<script>alert("Задача сохранена");</script>';
+            $ok = $this->model->set_data($_POST);
+            if ($ok) {
+                \App\Flash::success('Задача сохранена.');
+            }
+            $this->redirect('/taskslist');
         }
 
         $params = [
-            'page'  => $_GET['page']   ?? 1,
-            'limit' => $_GET['limit']  ?? 3,
+            'page'  => $_GET['page'] ?? 1,
+            'limit' => $_GET['limit'] ?? 3,
             'order' => $_POST['order'] ?? $_GET['order'] ?? 'id',
-            'by'    => $_POST['by']    ?? $_GET['by']    ?? 'DESC',
+            'by'    => $_POST['by'] ?? $_GET['by'] ?? 'DESC',
         ];
 
         $data = $this->model->get_data($params);
         $this->view->generate('taskslist_view.php', 'template_view.php', $data);
     }
 
+    private function redirect(string $path): void
+    {
+        header('Location: ' . $path);
+        exit;
+    }
 }

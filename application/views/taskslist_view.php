@@ -74,20 +74,12 @@ function showLinks($params)
     $limit = (int) $params['limit'];
     $total = (int) $params['total'];
 
-    $get_url = '';
-
     $params = array_merge($params, $_POST);
-
-    unset($params['page'], $params['_csrf']);
-
-    if (!empty($params)) {
-        foreach ($params as $key => $value) {
-            if (is_array($value)) {
-                continue;
-            }
-            $get_url .= '&' . rawurlencode((string) $key) . '=' . rawurlencode((string) $value);
-        }
+    foreach (['page', '_csrf', 'total', 'links'] as $drop) {
+        unset($params[$drop]);
     }
+    $query = http_build_query($params);
+    $get_url = $query !== '' ? '&' . $query : '';
 
     $last = max(1, (int) ceil($total / $limit));
 
@@ -166,7 +158,7 @@ function showSort($params)
         </form>
     ';
 
-    echo $html;
+    return $html;
 }
 
 function getOptions($arr, $selected = '')

@@ -1,0 +1,6 @@
+.git
+.idea
+.phpunit.cache
+.env
+storage/*.sqlite
+storage/*.sqlite-journal

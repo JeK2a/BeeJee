@@ -35,7 +35,8 @@ class Controller_Login extends Controller
 
             if ($this->model->verifyCredentials($userName, $password)) {
                 \App\LoginRateLimiter::reset();
-                $_SESSION['rules']    = ['edit'];
+                session_regenerate_id(true);
+                $_SESSION['rules']     = ['edit'];
                 $_SESSION['user_name'] = $userName;
                 \App\Flash::success('Вы успешно вошли.');
                 $this->redirect('/taskslist');

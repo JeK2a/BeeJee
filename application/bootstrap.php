@@ -53,7 +53,8 @@ require_once dirname(__DIR__) . '/application/core/model.php';
 require_once dirname(__DIR__) . '/application/core/view.php';
 require_once dirname(__DIR__) . '/application/core/controller.php';
 
-session_start();
+\App\Session::start();
+\App\SecurityHeaders::send();
 
 require_once dirname(__DIR__) . '/application/core/route.php';
 Route::start();

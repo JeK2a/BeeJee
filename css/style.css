@@ -59,6 +59,13 @@ img{
 .btn.green:hover:before{
     background: #35c568;
 }
+.btn.yellow{
+    border: 1px solid #e6a800;
+    color: #c49200;
+}
+.btn.yellow:hover:before{
+    background: #e6a800;
+}
 .btn.red:hover,
 .btn.blue:hover,
 .btn.orange:hover,

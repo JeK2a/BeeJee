@@ -31,10 +31,15 @@
                             <a href="/addtask" class="btn btn-lg blue">Добавить задание</a>
                         </div>
                         <div class="col-sm">
-                            <?php echo empty(
-                                $_SESSION['user_name']) ?
-                                '<a href="/login"  class="btn btn-lg red">Войти</a>' :
-                                '<a href="/logout" class="btn btn-lg red">Выйти</a>'
+                            <?php
+                            if (empty($_SESSION['user_name'])) {
+                                echo '<a href="/login"  class="btn btn-lg red">Войти</a>';
+                            } else {
+                                if (!empty($_SESSION['rules']) && in_array('edit', $_SESSION['rules'], true)) {
+                                    echo '<a href="/changepassword" class="btn btn-lg yellow">Пароль</a> ';
+                                }
+                                echo '<a href="/logout" class="btn btn-lg red">Выйти</a>';
+                            }
                             ?>
                         </div>
                     </div>

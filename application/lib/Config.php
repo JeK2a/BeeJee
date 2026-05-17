@@ -35,6 +35,13 @@ final class Config
         return (bool) self::all()['debug'];
     }
 
+    public static function runMigrations(): bool
+    {
+        self::all();
+
+        return filter_var(self::env('RUN_MIGRATIONS', '1'), FILTER_VALIDATE_BOOLEAN);
+    }
+
     /**
      * @return array<string, mixed>
      */

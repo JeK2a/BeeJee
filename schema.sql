@@ -1,4 +1,4 @@
--- MySQL / MariaDB schema (SQLite uses auto-created tables in application/class/DB.php)
+-- MySQL / MariaDB reference schema. Prefer database/migrations/ + php bin/migrate.php for installs.
 
 CREATE TABLE IF NOT EXISTS `task` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
